@@ -23,7 +23,7 @@ public class CompanyEntity {
     private UUID uuid;
 
     @NotBlank
-    @Pattern(regexp = "\\S" , message = "O campo [ username ] não deve conter espaços")
+    @Pattern(regexp = "^\\S+$", message = "O campo [ username ] não deve conter espaços")
     private String username;
 
     @Email(message = "o campo deve conter um e-mail válido")
