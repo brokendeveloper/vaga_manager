@@ -1,4 +1,4 @@
-package tech.brokendev.vagaManager.modules.candidate;
+package tech.brokendev.vagaManager.modules.company.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,27 +7,20 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.*;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Entity(name = "company")
 @Data
-@Entity(name = "candidate")
-public class CandidateEntity {
+public class CompanyEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-
-    private String name;
+    private UUID uuid;
 
     @NotBlank
     @Pattern(regexp = "^\\S+$", message = "O campo [ username ] não deve conter espaços")
@@ -39,9 +32,11 @@ public class CandidateEntity {
     @Length(min = 10, max = 100)
     private String password;
 
-    private String description;
+    private String website;
 
-    private String curriculum;
+    private String companyName;
+
+    private String companyDescription;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
