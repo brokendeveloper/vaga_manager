@@ -20,7 +20,7 @@ public class CompanyEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID uuid;
+    private UUID id;
 
     @NotBlank
     @Pattern(regexp = "^\\S+$", message = "O campo [ username ] não deve conter espaços")
