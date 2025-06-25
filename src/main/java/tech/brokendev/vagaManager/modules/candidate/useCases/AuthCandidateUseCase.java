@@ -40,15 +40,16 @@ public class AuthCandidateUseCase {
         }
 
         Algorithm algorithm = Algorithm.HMAC256(secretKeyCanditate);
+        var expiresIn = Instant.now().plus(Duration.ofMinutes(10));
         var token = JWT.create()
                 .withIssuer("vagamanager")
                 .withSubject(candidate.getId().toString())
                 .withClaim("roles", Arrays.asList("candidate"))
-                .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
                 .sign(algorithm);
 
         var authCandidateResponse = AuthCandidateResponseDTO.builder()
                 .acessToken(token)
+                .expiresIn(expiresIn.toEpochMilli())
                 .build();
 
         return authCandidateResponse;
