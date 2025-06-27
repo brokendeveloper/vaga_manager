@@ -44,7 +44,7 @@ public class AuthCandidateUseCase {
         var token = JWT.create()
                 .withIssuer("vagamanager")
                 .withSubject(candidate.getId().toString())
-                .withClaim("roles", Arrays.asList("candidate"))
+                .withClaim("roles", Arrays.asList("CANDIDATE"))
                 .sign(algorithm);
 
         var authCandidateResponse = AuthCandidateResponseDTO.builder()
