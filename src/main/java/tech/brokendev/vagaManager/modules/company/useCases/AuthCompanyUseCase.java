@@ -9,10 +9,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import tech.brokendev.vagaManager.modules.company.dto.AuthCompanyDTO;
+import tech.brokendev.vagaManager.modules.company.dto.AuthCompanyResponseDTO;
 import tech.brokendev.vagaManager.modules.company.repositories.CompanyRepository;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 
 @Service
 public class AuthCompanyUseCase {
@@ -27,7 +29,7 @@ public class AuthCompanyUseCase {
     private PasswordEncoder passwordEncoder;
 
 
-    public String execute(AuthCompanyDTO authCompanyDTO){
+    public AuthCompanyResponseDTO execute(AuthCompanyDTO authCompanyDTO){
         var company = this.companyRepository.findByUsername(authCompanyDTO.getUsername())
                 .orElseThrow(() -> {
                     throw new UsernameNotFoundException("Username / Password incorrect");
@@ -40,12 +42,21 @@ public class AuthCompanyUseCase {
         }
 
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
+
+        var expiresIn = Instant.now().plus(Duration.ofHours(2));
+
         var token = JWT.create().withIssuer("vagamanager")
-                .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
+                .withExpiresAt(expiresIn)
                 .withSubject(company.getId().toString())
+                .withClaim("roles", Arrays.asList("COMPANY"))
                 .sign(algorithm);
 
-        return token;
+        var authCompanyResponseDTO = AuthCompanyResponseDTO.builder()
+                .acessToken(token)
+                .expiresIn(expiresIn.toEpochMilli())
+                .build();
+
+        return authCompanyResponseDTO;
 
     }
 }
