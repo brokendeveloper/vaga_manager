@@ -26,9 +26,17 @@ public class SecurityFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
+        // Libera rotas do Swagger/OpenAPI
+        String path = request.getRequestURI();
+        if (path.startsWith("/v3/api-docs") || path.startsWith("/swagger-ui") || path.startsWith("/swagger-resources")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
        // SecurityContextHolder.getContext().setAuthentication(null);
 
         String authHeader = request.getHeader("Authorization");
+
+
 
         if(request.getRequestURI().startsWith("/company")) {
             if (authHeader != null) {

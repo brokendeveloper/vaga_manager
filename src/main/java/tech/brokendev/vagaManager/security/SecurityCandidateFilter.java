@@ -26,7 +26,16 @@ public class SecurityCandidateFilter extends OncePerRequestFilter {
 
         //SecurityContextHolder.getContext().setAuthentication(null);
 
+        // Libera rotas do Swagger/OpenAPI
+        String path = request.getRequestURI();
+        if (path.startsWith("/v3/api-docs") || path.startsWith("/swagger-ui") || path.startsWith("/swagger-resources")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String header = request.getHeader("Authorization");
+
+
 
         if(request.getRequestURI().startsWith("/candidate")) {
             if (header != null) {
