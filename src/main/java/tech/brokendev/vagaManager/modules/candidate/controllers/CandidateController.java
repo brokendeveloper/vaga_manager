@@ -1,6 +1,13 @@
 package tech.brokendev.vagaManager.modules.candidate.controllers;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +62,15 @@ public class CandidateController {
 
     @GetMapping("/job")
     @PreAuthorize("hasRole('CANDIDATE')")
+    @Tag(name = "Candidate", description = "Informations about the candidate")
+    @Operation(summary = "Listing all jobs for candidate", description = "This function is responsable for list all jobs with filter to candidate")
+    @ApiResponses(
+            {
+                    @ApiResponse(responseCode = "200", content = {
+                            @Content(array = @ArraySchema(schema = @Schema(implementation = JobEntity.class))),
+                    })
+            }
+    )
     public List<JobEntity>findJobByFilter(@RequestParam String filter){
         return this.listAllJobsByFilterUseCase.execute(filter);
     }
