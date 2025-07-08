@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tech.brokendev.vagaManager.modules.candidate.CandidateEntity;
+import tech.brokendev.vagaManager.modules.candidate.dto.ProfileCandidateResponseDTO;
 import tech.brokendev.vagaManager.modules.candidate.useCases.CreateCandidateUseCase;
 import tech.brokendev.vagaManager.modules.candidate.useCases.ListAllJobsByFilterUseCase;
 import tech.brokendev.vagaManager.modules.candidate.useCases.ProfileCandidateUseCase;
@@ -50,6 +51,19 @@ public class CandidateController {
 
     @GetMapping("/")
     @PreAuthorize("hasRole('CANDIDATE')")
+    @Tag(name = "Candidate", description = "Information of candidate")
+    @Operation(summary = "profile of candidate",
+        description = "this function is reponsible for searching the informations of candidate"
+
+    )
+    @ApiResponses(
+            {
+                    @ApiResponse(responseCode = "200", content = {
+                            @Content(schema = @Schema(implementation = ProfileCandidateResponseDTO.class)),
+                    })
+            }
+    )
+    @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<Object>get(HttpServletRequest request){
         var idCandidate = request.getAttribute("candidate_id");
         try{
@@ -69,7 +83,8 @@ public class CandidateController {
             {
                     @ApiResponse(responseCode = "200", content = {
                             @Content(array = @ArraySchema(schema = @Schema(implementation = JobEntity.class))),
-                    })
+                    }),
+                    @ApiResponse(responseCode = "400", description = "user not found")
             }
     )
     @SecurityRequirement(name = "jwt_auth")

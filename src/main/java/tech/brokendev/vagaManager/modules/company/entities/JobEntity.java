@@ -1,5 +1,6 @@
 package tech.brokendev.vagaManager.modules.company.entities;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -22,8 +23,10 @@ public class JobEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Schema(example = "Job for Java Engineer")
     private String description;
 
+    @Schema(example = "Benefits example")
     private String benefits;
 
     @NotBlank(message = "Este campo é obrigatório!")
