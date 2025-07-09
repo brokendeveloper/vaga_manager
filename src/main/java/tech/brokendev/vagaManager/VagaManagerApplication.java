@@ -9,12 +9,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@OpenAPIDefinition(info = @Info(
-		title = "Vaga Manager",
-		description = "API responsible for jobs management",
-		version = "1.0"
-))
-@SecurityScheme(name = "jwt_auth", scheme = "bearer", bearerFormat = "JWT", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
 public class VagaManagerApplication {
 
 	public static void main(String[] args) {

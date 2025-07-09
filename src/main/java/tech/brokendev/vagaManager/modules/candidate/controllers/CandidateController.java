@@ -27,6 +27,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/candidate")
+@Tag(name = "Candidate", description = "Informations about the candidate")
 public class CandidateController {
 
     @Autowired
@@ -39,6 +40,17 @@ public class CandidateController {
     private ListAllJobsByFilterUseCase listAllJobsByFilterUseCase;
 
     @PostMapping("/")
+    @Operation(summary = "register of candidate",
+            description = "this function is reponsible for register all informations about the candidate"
+
+    )
+    @ApiResponses(
+            {
+                    @ApiResponse(responseCode = "200", content = {
+                            @Content(schema = @Schema(implementation = ProfileCandidateResponseDTO.class)),
+                    })
+            }
+    )
     public ResponseEntity<Object> create(@Valid @RequestBody CandidateEntity candidate) {
         try{
             var result = this.createCandidateUseCase.execute(candidate);
@@ -49,9 +61,10 @@ public class CandidateController {
         }
     }
 
+
+
     @GetMapping("/")
     @PreAuthorize("hasRole('CANDIDATE')")
-    @Tag(name = "Candidate", description = "Information of candidate")
     @Operation(summary = "profile of candidate",
         description = "this function is reponsible for searching the informations of candidate"
 
@@ -59,8 +72,9 @@ public class CandidateController {
     @ApiResponses(
             {
                     @ApiResponse(responseCode = "200", content = {
-                            @Content(schema = @Schema(implementation = ProfileCandidateResponseDTO.class)),
-                    })
+                            @Content(schema = @Schema(implementation = CandidateEntity.class)),
+                    }),
+                    @ApiResponse(responseCode = "400", description = "user already exists")
             }
     )
     @SecurityRequirement(name = "jwt_auth")
@@ -77,7 +91,6 @@ public class CandidateController {
 
     @GetMapping("/job")
     @PreAuthorize("hasRole('CANDIDATE')")
-    @Tag(name = "Candidate", description = "Informations about the candidate")
     @Operation(summary = "Listing all jobs for candidate", description = "This function is responsable for list all jobs with filter to candidate")
     @ApiResponses(
             {

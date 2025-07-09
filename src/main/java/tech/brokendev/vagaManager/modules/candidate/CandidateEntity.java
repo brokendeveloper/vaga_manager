@@ -1,5 +1,6 @@
 package tech.brokendev.vagaManager.modules.candidate;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +28,7 @@ public class CandidateEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Schema(example = "candidateExampleName", requiredMode = Schema.RequiredMode.REQUIRED, description = "Name of candidate")
     private String name;
 
     @NotBlank
@@ -34,11 +36,14 @@ public class CandidateEntity {
     private String username;
 
     @Email(message = "o campo deve conter um e-mail válido")
+    @Schema(example = "candidateEmail@example.com", requiredMode = Schema.RequiredMode.REQUIRED, description = "email of candidate")
     private String email;
 
     @Length(min = 10, max = 100)
+    @Schema(example = "admin@124$", minLength = 10, maxLength = 100, requiredMode = Schema.RequiredMode.REQUIRED, description = "password of candidate")
     private String password;
 
+    @Schema(example = "candidate Example description -> Java Dev")
     private String description;
 
     private String curriculum;
